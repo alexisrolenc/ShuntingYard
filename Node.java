@@ -12,6 +12,7 @@ public class Node
     public Node(String payLoad)
     {
         this.payLoad = payLoad;
+        this.nextNode = null;
     }
 
     public String getPayLoad()
@@ -22,11 +23,6 @@ public class Node
     public Node getNextNode()
     {
         return nextNode;
-    }
-
-    public void setPayLoad(String payLoad)
-    {
-        this.payLoad = payLoad;
     }
 
     public void setNextNode(Node nextNode)

@@ -6,12 +6,14 @@ package com.example.alexi_000.shuntingyard;
 
 public class Queue
 {
-    private Node head;
+    private Node front;
+    private Node end;
     private int count;
 
     public Queue()
     {
-        this.head = null;
+        this.front = null;
+        this.end = null;
         this.count = 0;
     }
 
@@ -20,37 +22,31 @@ public class Queue
         return count;
     }
 
-    public String dequeue()
+    public Node dequeue()
     {
-        if(this.count == 0)
+        Node nodeToReturn = this.front;
+        if(this.front != null)
         {
-            throw (new RuntimeException("Can't remove from empty queue..."));
+            this.front = nodeToReturn.getNextNode();
+            nodeToReturn.setNextNode(null);
+            this.count--;
         }
-        else
-        {
-            Node currFront = this.head;
-            this.head = this.head.getNextNode();
-            currFront.setNextNode(null);
-            this.count++;
-            return currFront.getPayLoad();
-        }
+        return nodeToReturn;
     }
 
-    public void enqueue(String s)
+    public void enqueue(String value)
     {
-        Node n = new Node(s);
-        if(this.head == null)
+        Node n = new Node(value);
+        this.count++;
+        if(this.end == null)
         {
-            this.head = n;
+            this.front = n;
+            this.end = n;
         }
         else
         {
-            Node currNode = this.head;
-            while (currNode.getNextNode() != null) {
-                currNode = currNode.getNextNode();
-            }
-            currNode.setNextNode(n);
+            this.end.setNextNode(n);
+            this.end = n;
         }
-        this.count++;
     }
 }

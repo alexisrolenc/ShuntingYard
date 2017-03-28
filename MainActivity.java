@@ -6,11 +6,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.StringTokenizer;
+
 public class MainActivity extends AppCompatActivity
 {
 
     private EditText input;
-    private Queue mQueue;
     private TextView dQueue;
 
     @Override
@@ -18,25 +19,35 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.mQueue = new Queue();
         this.input = (EditText)this.findViewById(R.id.inputET);
         this.dQueue = (TextView)this.findViewById(R.id.outputTV);
     }
 
-    public void runButton(View v)
+    public void processButtonPressed(View v)
     {
-        String mathEquation = this.input.getText().toString();
-        String[] mathArray = mathEquation.split("\\s");
-        mathEquation = "";
-        for(int i = 0; i < mathArray.length; i++)
+        StringTokenizer st = new StringTokenizer(this.input.getText().toString(), "+-*/", true);
+        Queue q = new Queue();
+        Stack s = new Stack();
+        while(st.hasMoreTokens())
         {
-            this.mQueue.enqueue(mathArray[i]);
+            if(st.nextToken() == "+" || st.nextToken() == "-" || st.nextToken() == "*" || st.nextToken() == "/")
+            {
+                s.push(st.nextToken());
+            }
+            else
+            {
+                q.enqueue(st.nextToken());
+            }
         }
-
-        while(this.mQueue.getCount() > 0)
+        String answer = "";
+        while(q.getCount() > 0)
         {
-            mathEquation = mathEquation + " " + this.mQueue.dequeue();
+            answer = answer + q.dequeue().getPayLoad() + " ";
         }
-        this.dQueue.setText(mathEquation);
+        while(s.peek() != null)
+        {
+            answer = answer + s.pop();
+        }
+        this.dQueue.setText(answer);
     }
 }
